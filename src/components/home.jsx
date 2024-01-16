@@ -15,7 +15,9 @@ const home=()=>{
             return;
         }
         else{
-          
+          // console.log("game page");
+          // <Link to='/gamepage'>Game Page</Link>
+            // <Link to={{pathname: '/gamepage', state:{level:difficulty, user: name}}}></Link>
             navigate('/gamepage',{state:{level:difficulty, user:name}} );
         }
     }

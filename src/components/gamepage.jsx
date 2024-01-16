@@ -5,7 +5,7 @@ import easydata from "../assets/easyWords.json";
 import mediumdata from "../assets/mediumWords.json";
 import harddata from "../assets/hardWords.json";
 
-const page = () => {
+const page = (props) => {
   const location = useLocation();
   let level = location.state.level;
   let difficultyfactor = 1.5;
@@ -16,7 +16,7 @@ const page = () => {
   const [enteredWord, setEnteredWord] = useState("");
   const [givenWord, setgivenWord] = useState(mediumdata[0]);
   const [stop, setStop] = useState(false);
-
+  const [scoredata, setscoredata]=useState([]);
   
   if (level == "Easy") difficultyfactor = 1;
   else if (level == "Medium") difficultyfactor = 1.5;
@@ -65,8 +65,11 @@ const page = () => {
     }
 
     if(gameover==true){
-      document.querySelector('.timer').remove();
-      document.querySelector('#enteruserword').remove();
+      setscoredata([...scoredata, {iter, counter}]);
+      // console.log(scoredata);
+      document.querySelector('.timer').style.visibility="hidden";
+      document.querySelector('#enteruserword').style.visibility="hidden";
+      document.querySelector('#givenword').style.color="#ffbf00";
       document.querySelector('#givenword').innerHTML=counter;
 
     }
@@ -74,6 +77,7 @@ const page = () => {
 
   function randomword() {
     // console.log(level);
+    document.querySelector('#givenword').style.color="#ffbf00";
     if (level == "Easy") {
       const i = Math.floor(Math.random() * Object.keys(easydata).length);
       setgivenWord(easydata[i]);
@@ -87,31 +91,50 @@ const page = () => {
       setgivenWord(harddata[i]);
       // console.log(harddata[i]);
     }
-
+    
     setwordcounter(Math.floor(givenWord.length / difficultyfactor));
     difficultyfactor = difficultyfactor + 0.01;
-    console.log(`wordcounter= ${wordcounter}`);
+    // console.log(`wordcounter= ${wordcounter}`);
   }
 
   function handlematch(e) {
     setEnteredWord(e.target.value);
 
     if (enteredWord.trim().toLowerCase() === givenWord.toLowerCase()) {
-      something();
+      document.querySelector("#givenword").style.color="green";
+      setEnteredWord("");
       randomword();
-      console.log("Match!");
+      // console.log("Match!");
     } else {
-      console.log("No match!");
+      document.querySelector("#givenword").style.color="red";
+      if(wordcounter<=0)
+      {
+        setscoredata([...scoredata, {iter, counter}]);
+      document.querySelector('.timer').style.visibility="hidden";
+      document.querySelector('#enteruserword').style.visibility="hidden";
+      document.querySelector('#givenword').style.color="#ffbf00";
+      document.querySelector('#givenword').innerHTML=counter;
+      }
+
+      // console.log("No match!");
     }
-  }
-  function something() {
-    setEnteredWord("");
   }
 
   function playagain(){
-    window.location.href = "/gamepage"
-    
     setiter(iter+1);
+    setEnteredWord("");
+    setCounter(0);
+    setStop(false);
+    setgameover(false);
+    document.querySelector('.timer').style.visibility="visible";
+    document.querySelector('#enteruserword').style.visibility="visible";
+    document.querySelector('#enteruserword').focus();
+    randomword();
+    // randomword()
+    // <Link to='/gamepage'></Link>
+    // window.location.href = "/gamepage"
+    
+    
   }
 
   return (
@@ -140,11 +163,22 @@ const page = () => {
         <div className="scoreboard">
           Score Board
           <hr />
-          <div>Game 1: 10</div>
-          <div>Game 1: 10</div>
-          <div>Game 1: 10</div>
-          <div>Game 1: 10</div>
-          <div>Game 1: 10</div>
+          <div id="highscore">High Score: 0 </div>
+          <hr />
+          {
+            scoredata.map((element, index)=>{
+              let max=0;
+                if(element.counter>max){
+                max=element.counter;
+                document.getElementById("highscore").innerHTML=`High score: ${max} `;
+                }
+              return(
+                <div>Game {element.iter}: {element.counter} </div>
+               
+
+              )
+            })
+          }
         </div>
 
         <div className="timer">{wordcounter}</div>
@@ -155,6 +189,7 @@ const page = () => {
           placeholder="Enter the word here"
           value={enteredWord}
           onChange={handlematch}
+          autoFocus
         />
       </div>
       {/* <button onClick={()=>checkMatch()}> </button> */}
