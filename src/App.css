@@ -47,7 +47,9 @@
 
 body{
   background-color: #797d81;
-  
+  background-image: url('./images/background1.jpg');
+  background-repeat: repeat;
+  background-size: cover;
 }
 
 
@@ -164,7 +166,7 @@ button:active {
 
 .scoreboard{
   display: flex;
-  width: 25vw;
+  width: max-content;
   height: max-content;
   margin: 10px 0px 0px 40px;
   flex-direction: column;
@@ -188,4 +190,27 @@ button:active {
   margin: 0px;
   font-size: 50px;
   color: #f28500;
+}
+
+.mainwindow{
+  /* background-image: url('./images/background.jpg');
+  background-repeat: repeat;
+  background-size: contain; */
+  display: flex;
+  justify-content:space-evenly;
+  
+}
+
+.gamewindow{
+  
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+}
+
+@media screen and (max-width:550px) {
+  .mainwindow{
+    display: block;
+    background-color:#797d81;
+  }
 }

@@ -5,19 +5,19 @@ import easydata from "../assets/easyWords.json";
 import mediumdata from "../assets/mediumWords.json";
 import harddata from "../assets/hardWords.json";
 
-const page = (props) => {
+const page = () => {
   const location = useLocation();
   let level = location.state.level;
   let difficultyfactor = 1.5;
-  let[iter, setiter]=useState(1);
+  let [iter, setiter] = useState(1);
   const [gameover, setgameover] = useState(false);
   const [counter, setCounter] = useState(0);
   let [wordcounter, setwordcounter] = useState(5);
   const [enteredWord, setEnteredWord] = useState("");
   const [givenWord, setgivenWord] = useState(mediumdata[0]);
   const [stop, setStop] = useState(false);
-  const [scoredata, setscoredata]=useState([]);
-  
+  const [scoredata, setscoredata] = useState([]);
+
   if (level == "Easy") difficultyfactor = 1;
   else if (level == "Medium") difficultyfactor = 1.5;
   else difficultyfactor = 2;
@@ -33,51 +33,53 @@ const page = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(stop) {
-        clearInterval(interval); 
-        return;  
+      if (stop) {
+        clearInterval(interval);
+        return;
       }
 
-      setCounter(counter => counter + 1);
+      setCounter((counter) => counter + 1);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [stop]);
-
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(stop) {
-        clearInterval(interval); 
-        return;  
+      if (stop) {
+        clearInterval(interval);
+        return;
       }
 
-      setwordcounter(wordcounter => wordcounter - 1);
+      setwordcounter((wordcounter) => wordcounter - 1);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [stop]);
 
-  useEffect(() => {
-    if(wordcounter <=0) {
-      setStop(true);
-      setgameover(true);
-    }
+  useEffect(
+    () => {
+      if (wordcounter <= 0) {
+        setStop(true);
+        setgameover(true);
+      }
 
-    if(gameover==true){
-      setscoredata([...scoredata, {iter, counter}]);
-      // console.log(scoredata);
-      document.querySelector('.timer').style.visibility="hidden";
-      document.querySelector('#enteruserword').style.visibility="hidden";
-      document.querySelector('#givenword').style.color="#ffbf00";
-      document.querySelector('#givenword').innerHTML=counter;
-
-    }
-  }, [wordcounter], [counter]);
+      if (gameover == true) {
+        setscoredata([...scoredata.slice(-10), { iter, counter }]);
+        // console.log(scoredata);
+        document.querySelector(".timer").style.visibility = "hidden";
+        document.querySelector("#enteruserword").style.visibility = "hidden";
+        document.querySelector("#givenword").style.color = "#ffbf00";
+        document.querySelector("#givenword").innerHTML = counter;
+      }
+    },
+    [wordcounter],
+    [counter]
+  );
 
   function randomword() {
     // console.log(level);
-    document.querySelector('#givenword').style.color="#ffbf00";
+    document.querySelector("#givenword").style.color = "#ffbf00";
     if (level == "Easy") {
       const i = Math.floor(Math.random() * Object.keys(easydata).length);
       setgivenWord(easydata[i]);
@@ -91,7 +93,7 @@ const page = (props) => {
       setgivenWord(harddata[i]);
       // console.log(harddata[i]);
     }
-    
+
     setwordcounter(Math.floor(givenWord.length / difficultyfactor));
     difficultyfactor = difficultyfactor + 0.01;
     // console.log(`wordcounter= ${wordcounter}`);
@@ -100,41 +102,52 @@ const page = (props) => {
   function handlematch(e) {
     setEnteredWord(e.target.value);
 
+
     if (enteredWord.trim().toLowerCase() === givenWord.toLowerCase()) {
-      document.querySelector("#givenword").style.color="green";
+      document.querySelector("#givenword").style.color = "green";
       setEnteredWord("");
       randomword();
       // console.log("Match!");
     } else {
-      document.querySelector("#givenword").style.color="red";
-      if(wordcounter<=0)
-      {
-        setscoredata([...scoredata, {iter, counter}]);
-      document.querySelector('.timer').style.visibility="hidden";
-      document.querySelector('#enteruserword').style.visibility="hidden";
-      document.querySelector('#givenword').style.color="#ffbf00";
-      document.querySelector('#givenword').innerHTML=counter;
+      document.querySelector("#givenword").style.color = "red";
+      if (wordcounter <= 0) {
+        setscoredata([...scoredata, { iter, counter }]);
+        document.querySelector(".timer").style.visibility = "hidden";
+        document.querySelector("#enteruserword").style.visibility = "hidden";
+        document.querySelector("#givenword").style.color = "#ffbf00";
+        document.querySelector("#givenword").innerHTML = counter;
       }
 
       // console.log("No match!");
     }
   }
 
-  function playagain(){
-    setiter(iter+1);
+  function playagain() {
+    setiter(iter + 1);
     setEnteredWord("");
     setCounter(0);
     setStop(false);
     setgameover(false);
-    document.querySelector('.timer').style.visibility="visible";
-    document.querySelector('#enteruserword').style.visibility="visible";
-    document.querySelector('#enteruserword').focus();
+    setscoredata([...scoredata.slice(-10), { iter, counter }]);
+    scoredata.map((element, index) => {
+      let max = 0;
+      if (element.counter > max) {
+        max = element.counter;
+        document.getElementById("highscore").innerHTML = `High score: ${max} `;
+      }
+      return (
+        <div>
+          Game {element.iter}: {element.counter}{" "}
+        </div>
+      );
+    });
+    document.querySelector(".timer").style.visibility = "visible";
+    document.querySelector("#enteruserword").style.visibility = "visible";
+    document.querySelector("#enteruserword").focus();
     randomword();
     // randomword()
     // <Link to='/gamepage'></Link>
     // window.location.href = "/gamepage"
-    
-    
   }
 
   return (
@@ -142,7 +155,7 @@ const page = (props) => {
       className="background"
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "contain",
+        backgroundSize: "cover",
         backgroundRepeat: "repeat",
       }}
     >
@@ -160,27 +173,28 @@ const page = (props) => {
         Game {iter}
       </div>
       <div className="mainwindow">
-        <div className="scoreboard">
-          Score Board
-          <hr />
-          <div id="highscore">High Score: 0 </div>
-          <hr />
-          {
-            scoredata.map((element, index)=>{
-              let max=0;
-                if(element.counter>max){
-                max=element.counter;
-                document.getElementById("highscore").innerHTML=`High score: ${max} `;
-                }
-              return(
-                <div>Game {element.iter}: {element.counter} </div>
-               
-
-              )
-            })
+      <div className="scoreboard">
+        Score Board
+        <hr />
+        <div id="highscore">High Score: 0 </div>
+        <hr />
+        {scoredata.map((element, index) => {
+          let max = 0;
+          if (element.counter > max) {
+            max = element.counter;
+            document.getElementById(
+              "highscore"
+            ).innerHTML = `High score: ${max} `;
           }
-        </div>
+          return (
+            <div>
+              Game {element.iter}: {element.counter}{" "}
+            </div>
+          );
+        })}
+      </div>
 
+      <div className="gamewindow">
         <div className="timer">{wordcounter}</div>
         <p id="givenword">{givenWord}</p>
         <input
@@ -191,15 +205,18 @@ const page = (props) => {
           onChange={handlematch}
           autoFocus
         />
-      </div>
-      {/* <button onClick={()=>checkMatch()}> </button> */}
 
-      <button id="enter" onClick={()=>playagain()}>
+<button id="enter" onClick={() => playagain()}>
         Play Again
       </button>
       <button id="enter" onClick={() => (window.location.href = "/")}>
         Quit Game
       </button>
+      </div>
+      {/* <button onClick={()=>checkMatch()}> </button> */}
+
+      
+    </div>
     </div>
   );
 };

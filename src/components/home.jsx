@@ -25,11 +25,7 @@ const home=()=>{
     return(
         <div
       className="background"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "contain",
-        backgroundRepeat: "repeat",
-      }}
+      
     >
       <img id='thumbnail' src={thumbnail} alt="Thumbnail of game" />
       <div className="title">Fast Finger</div>
