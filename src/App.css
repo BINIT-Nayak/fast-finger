@@ -180,7 +180,7 @@ button:active {
 
 .timer{
   display: inline-block;
-  font-size: 20px;
+  font-size: 50px;
   font-weight: bolder;
   color: white;
 }
@@ -188,7 +188,7 @@ button:active {
 #givenword{
   display: block;
   margin: 0px;
-  font-size: 50px;
+  font-size: 80px;
   color: #f28500;
 }
 

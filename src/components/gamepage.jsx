@@ -4,6 +4,7 @@ import backgroundImage from "../images/background.jpg";
 import easydata from "../assets/easyWords.json";
 import mediumdata from "../assets/mediumWords.json";
 import harddata from "../assets/hardWords.json";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const page = () => {
   const location = useLocation();
@@ -71,9 +72,9 @@ const page = () => {
         document.querySelector("#enteruserword").style.visibility = "hidden";
         document.querySelector("#givenword").style.color = "#ffbf00";
         document.querySelector("#givenword").innerHTML = counter;
+        
       }
     },
-    [wordcounter],
     [counter]
   );
 
@@ -96,12 +97,15 @@ const page = () => {
 
     setwordcounter(Math.floor(givenWord.length / difficultyfactor));
     difficultyfactor = difficultyfactor + 0.01;
+    if(difficultyfactor>=1.5)
+    level="Medium";
+  else if(difficultyfactor>=2)
+  level="Difficult";
     // console.log(`wordcounter= ${wordcounter}`);
   }
 
   function handlematch(e) {
     setEnteredWord(e.target.value);
-
 
     if (enteredWord.trim().toLowerCase() === givenWord.toLowerCase()) {
       document.querySelector("#givenword").style.color = "green";
@@ -116,6 +120,7 @@ const page = () => {
         document.querySelector("#enteruserword").style.visibility = "hidden";
         document.querySelector("#givenword").style.color = "#ffbf00";
         document.querySelector("#givenword").innerHTML = counter;
+        
       }
 
       // console.log("No match!");
@@ -173,50 +178,65 @@ const page = () => {
         Game {iter}
       </div>
       <div className="mainwindow">
-      <div className="scoreboard">
-        Score Board
-        <hr />
-        <div id="highscore">High Score: 0 </div>
-        <hr />
-        {scoredata.map((element, index) => {
-          let max = 0;
-          if (element.counter > max) {
-            max = element.counter;
-            document.getElementById(
-              "highscore"
-            ).innerHTML = `High score: ${max} `;
-          }
-          return (
-            <div>
-              Game {element.iter}: {element.counter}{" "}
-            </div>
-          );
-        })}
+        <div className="scoreboard">
+          Score Board
+          <hr />
+          <div id="highscore">High Score: 0 </div>
+          <hr />
+          {scoredata.map((element, index) => {
+            let max = 0;
+            if (element.counter > max) {
+              max = element.counter;
+              document.getElementById(
+                "highscore"
+              ).innerHTML = `High score: ${max} `;
+            }
+            return (
+              <div>
+                Game {element.iter}: {element.counter}{" "}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="gamewindow">
+          <div className="timer">
+           {wordcounter}
+            
+          {/* <CountdownCircleTimer
+            isPlaying
+            duration={wordcounter}
+            colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+            colorsTime={[7, 5, 2, 0]}
+            onComplete={() => {
+              setStop(true);
+                setgameover(true);
+                isgameover();
+            }}
+          >
+            {({ remainingTime }) => remainingTime}
+            
+          </CountdownCircleTimer> */}
+          </div>
+          <p id="givenword">{givenWord}</p>
+          <input
+            type="text"
+            id="enteruserword"
+            placeholder="Enter the word here"
+            value={enteredWord}
+            onChange={handlematch}
+            autoFocus
+          />
+
+          <button id="enter" onClick={() => playagain()}>
+            Play Again
+          </button>
+          <button id="enter" onClick={() => (window.location.href = "/")}>
+            Quit Game
+          </button>
+        </div>
+        {/* <button onClick={()=>checkMatch()}> </button> */}
       </div>
-
-      <div className="gamewindow">
-        <div className="timer">{wordcounter}</div>
-        <p id="givenword">{givenWord}</p>
-        <input
-          type="text"
-          id="enteruserword"
-          placeholder="Enter the word here"
-          value={enteredWord}
-          onChange={handlematch}
-          autoFocus
-        />
-
-<button id="enter" onClick={() => playagain()}>
-        Play Again
-      </button>
-      <button id="enter" onClick={() => (window.location.href = "/")}>
-        Quit Game
-      </button>
-      </div>
-      {/* <button onClick={()=>checkMatch()}> </button> */}
-
-      
-    </div>
     </div>
   );
 };
