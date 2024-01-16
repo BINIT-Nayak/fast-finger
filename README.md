@@ -1,4 +1,5 @@
-#Fast Fingers
+#
+Fast Fingers 
 A simple typing game app built with React. The app allows users to practice typing and see their words per minute score.
 
 Features
