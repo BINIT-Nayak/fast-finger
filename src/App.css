@@ -211,6 +211,8 @@ button:active {
 @media screen and (max-width:550px) {
   .mainwindow{
     display: block;
-    background-color:#797d81;
+    background-image: url('./images/background.jpg');
+    background-repeat: repeat;
+    background-size: contain;
   }
 }
