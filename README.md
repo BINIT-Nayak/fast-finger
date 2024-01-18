@@ -23,3 +23,6 @@ The page will reload if you make edits.
 
 Customizing Words
 The app fetches random words from the given json dataset
+
+Deployment:
+You can access my website here: https://binit-nayak.netlify.app/
