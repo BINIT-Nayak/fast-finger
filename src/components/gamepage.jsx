@@ -13,7 +13,7 @@ const page = () => {
 
   const [iter, setIter] = useState(1);
   const [counter, setCounter] = useState(0);
-  const [wordcounter, setWordCounter] = useState(5);
+  const [wordCounter, setWordCounter] = useState(5);
   const [enteredWord, setEnteredWord] = useState("");
   const [givenWord, setGivenWord] = useState(mediumdata[0]);
   const [stop, setStop] = useState(false);
@@ -45,14 +45,14 @@ const page = () => {
       }
 
       setCounter((counter) => counter + 1);
-      setWordCounter((wordcounter) => wordcounter - 1);
+      setWordCounter((wordCounter) => wordCounter - 1);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [stop]);
 
   useEffect(() => {
-    if (wordcounter <= 0) {
+    if (wordCounter <= 0) {
       setStop(true);
       // console.log(scoredata);
       timerRef.current.style.visibility = "hidden";
@@ -84,15 +84,15 @@ const page = () => {
     difficultyFactor = difficultyFactor + 0.01;
     if (difficultyFactor >= 1.5) level = "Medium";
     else if (difficultyFactor >= 2) level = "Difficult";
-    // console.log(`wordcounter= ${wordcounter}`);
+    // console.log(`wordCounter= ${wordCounter}`);
   }
 
   function handlematch(e) {
-    setEnteredWord(e.target.value);
-
-    if (enteredWord.trim().toLowerCase() === givenWord.toLowerCase()) {
+    let temp=e.target.value;
+    setEnteredWord(temp);
+    if (temp === givenWord) {
       givenWordRef.current.style.color = "green";
-      setEnteredWord("");
+      enteredWordRef.current.value="";
       randomword();
       // console.log("Match!");
     } else {
@@ -131,11 +131,6 @@ const page = () => {
   return (
     <div
       className="background"
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "repeat",
-      }}
     >
       <div className="profile">
         <div className="profilesubtitle">User: {location.state.user}</div>
@@ -173,19 +168,23 @@ const page = () => {
         <div className="gamewindow">
           <div className="timer" ref={timerRef}>
             
-            {wordcounter}
+            {wordCounter}
 
             {/* <CountdownCircleTimer
             isPlaying
-            duration={wordcounter}
+            duration={wordCounter}
             colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
             colorsTime={[7, 5, 2, 0]}
             onComplete={() => {
-              setStop(true);
-                setgameover(true);
-                isgameover();
+                // setStop(true);
+                // console.log(scoredata);
+                timerRef.current.style.visibility = "hidden";
+                enteredWordRef.current.style.visibility = "hidden";
+                givenWordRef.current.style.color = "#ffbf00";
+                givenWordRef.current.innerHTML = counter;
+                return {shouldRepeat:true}
             }}
-          >
+          > 
             {({ remainingTime }) => remainingTime}
             
           </CountdownCircleTimer> */}
@@ -195,7 +194,7 @@ const page = () => {
             type="text"
             id="enteruserword"
             placeholder="Enter the word here"
-            value={enteredWord}
+            
             onChange={handlematch}
             autoFocus
             ref={enteredWordRef}
