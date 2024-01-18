@@ -133,15 +133,17 @@ const page = () => {
       className="background"
     >
       <div className="profile">
+      <div className="leftprofile">
         <div className="profilesubtitle">User: {location.state.user}</div>
         <div className="profilesubtitle"> {level} Level</div>
       </div>
 
       <div className="scoreprofile">
-        <div className="subtitle">Fast Fingers </div>
-        <div className="subtitle"> Score: {counter} </div>
+        <div className="profilesubtitle">Fast Fingers </div>
+        <div className="profilesubtitle"> Score: {counter} </div>
       </div>
-      <div></div>
+      </div>
+      
       <div className="subtitle" id="gamenumber">
         Game {iter}
       </div>
