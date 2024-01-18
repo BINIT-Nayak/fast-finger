@@ -115,7 +115,7 @@ const page = () => {
     } else {
       document.querySelector("#givenword").style.color = "red";
       if (wordcounter <= 0) {
-        setscoredata([...scoredata, { iter, counter }]);
+        // setscoredata([...scoredata, { iter, counter }]);
         document.querySelector(".timer").style.visibility = "hidden";
         document.querySelector("#enteruserword").style.visibility = "hidden";
         document.querySelector("#givenword").style.color = "#ffbf00";
