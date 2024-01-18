@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import backgroundImage from "../images/background.jpg";
 import easydata from "../assets/easyWords.json";
@@ -9,19 +9,24 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const page = () => {
   const location = useLocation();
   let level = location.state.level;
-  let difficultyfactor = 1.5;
-  let [iter, setiter] = useState(1);
-  const [gameover, setgameover] = useState(false);
-  const [counter, setCounter] = useState(0);
-  let [wordcounter, setwordcounter] = useState(5);
-  const [enteredWord, setEnteredWord] = useState("");
-  const [givenWord, setgivenWord] = useState(mediumdata[0]);
-  const [stop, setStop] = useState(false);
-  const [scoredata, setscoredata] = useState([]);
+  let difficultyFactor = 1.5;
 
-  if (level == "Easy") difficultyfactor = 1;
-  else if (level == "Medium") difficultyfactor = 1.5;
-  else difficultyfactor = 2;
+  const [iter, setIter] = useState(1);
+  const [counter, setCounter] = useState(0);
+  const [wordcounter, setWordCounter] = useState(5);
+  const [enteredWord, setEnteredWord] = useState("");
+  const [givenWord, setGivenWord] = useState(mediumdata[0]);
+  const [stop, setStop] = useState(false);
+  const [scoredata, setScoreData] = useState([]);
+
+  const timerRef=useRef();
+  const givenWordRef=useRef();
+  const enteredWordRef=useRef();
+  const highScoreRef=useRef();
+
+  if (level == "Easy") difficultyFactor = 1;
+  else if (level == "Medium") difficultyFactor = 1.5;
+  else difficultyFactor = 2;
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -40,67 +45,45 @@ const page = () => {
       }
 
       setCounter((counter) => counter + 1);
+      setWordCounter((wordcounter) => wordcounter - 1);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [stop]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (stop) {
-        clearInterval(interval);
-        return;
-      }
-
-      setwordcounter((wordcounter) => wordcounter - 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [stop]);
-
-  useEffect(
-    () => {
-      if (wordcounter <= 0) {
-        setStop(true);
-        setgameover(true);
-      }
-
-      if (gameover == true) {
-        setscoredata([...scoredata.slice(-10), { iter, counter }]);
-        // console.log(scoredata);
-        document.querySelector(".timer").style.visibility = "hidden";
-        document.querySelector("#enteruserword").style.visibility = "hidden";
-        document.querySelector("#givenword").style.color = "#ffbf00";
-        document.querySelector("#givenword").innerHTML = counter;
-        
-      }
-    },
-    [counter]
-  );
+    if (wordcounter <= 0) {
+      setStop(true);
+      // console.log(scoredata);
+      timerRef.current.style.visibility = "hidden";
+      enteredWordRef.current.style.visibility = "hidden";
+      givenWordRef.current.style.color = "#ffbf00";
+      givenWordRef.current.innerHTML = counter;
+      
+    }
+  }, [counter]);
 
   function randomword() {
     // console.log(level);
-    document.querySelector("#givenword").style.color = "#ffbf00";
+    givenWordRef.current.style.color = "#ffbf00";
     if (level == "Easy") {
       const i = Math.floor(Math.random() * Object.keys(easydata).length);
-      setgivenWord(easydata[i]);
+      setGivenWord(easydata[i]);
       // console.log(easydata[i]);
     } else if (level == "Medium") {
       const i = Math.floor(Math.random() * Object.keys(mediumdata).length);
-      setgivenWord(mediumdata[i]);
+      setGivenWord(mediumdata[i]);
       // console.log(mediumdata[i]);
     } else {
       const i = Math.floor(Math.random() * Object.keys(harddata).length);
-      setgivenWord(harddata[i]);
+      setGivenWord(harddata[i]);
       // console.log(harddata[i]);
     }
 
-    setwordcounter(Math.floor(givenWord.length / difficultyfactor));
-    difficultyfactor = difficultyfactor + 0.01;
-    if(difficultyfactor>=1.5)
-    level="Medium";
-  else if(difficultyfactor>=2)
-  level="Difficult";
+    setWordCounter(Math.floor(givenWord.length / difficultyFactor));
+    difficultyFactor = difficultyFactor + 0.01;
+    if (difficultyFactor >= 1.5) level = "Medium";
+    else if (difficultyFactor >= 2) level = "Difficult";
     // console.log(`wordcounter= ${wordcounter}`);
   }
 
@@ -108,37 +91,28 @@ const page = () => {
     setEnteredWord(e.target.value);
 
     if (enteredWord.trim().toLowerCase() === givenWord.toLowerCase()) {
-      document.querySelector("#givenword").style.color = "green";
+      givenWordRef.current.style.color = "green";
       setEnteredWord("");
       randomword();
       // console.log("Match!");
     } else {
-      document.querySelector("#givenword").style.color = "red";
-      if (wordcounter <= 0) {
-        // setscoredata([...scoredata, { iter, counter }]);
-        document.querySelector(".timer").style.visibility = "hidden";
-        document.querySelector("#enteruserword").style.visibility = "hidden";
-        document.querySelector("#givenword").style.color = "#ffbf00";
-        document.querySelector("#givenword").innerHTML = counter;
-        
-      }
-
+      givenWordRef.current.style.color = "red";
       // console.log("No match!");
     }
   }
 
   function playagain() {
-    setiter(iter + 1);
+    setIter(iter + 1);
     setEnteredWord("");
     setCounter(0);
     setStop(false);
-    setgameover(false);
-    setscoredata([...scoredata.slice(-10), { iter, counter }]);
+    
+    setScoreData([...scoredata.slice(-10), { iter, counter }]);
     scoredata.map((element, index) => {
       let max = 0;
       if (element.counter > max) {
         max = element.counter;
-        document.getElementById("highscore").innerHTML = `High score: ${max} `;
+        highScoreRef.current.innerHTML = `High score: ${max} `;
       }
       return (
         <div>
@@ -146,11 +120,10 @@ const page = () => {
         </div>
       );
     });
-    document.querySelector(".timer").style.visibility = "visible";
-    document.querySelector("#enteruserword").style.visibility = "visible";
-    document.querySelector("#enteruserword").focus();
+    timerRef.current.style.visibility = "visible";
+    enteredWordRef.current.style.visibility = "visible";
+    enteredWordRef.current.focus();
     randomword();
-    // randomword()
     // <Link to='/gamepage'></Link>
     // window.location.href = "/gamepage"
   }
@@ -181,15 +154,13 @@ const page = () => {
         <div className="scoreboard">
           Score Board
           <hr />
-          <div id="highscore">High Score: 0 </div>
+          <div id="highscore" ref={highScoreRef}>High Score: 0 </div>
           <hr />
           {scoredata.map((element, index) => {
             let max = 0;
             if (element.counter > max) {
               max = element.counter;
-              document.getElementById(
-                "highscore"
-              ).innerHTML = `High score: ${max} `;
+              highScoreRef.current.innerHTML = `High score: ${max} `;
             }
             return (
               <div>
@@ -200,10 +171,11 @@ const page = () => {
         </div>
 
         <div className="gamewindow">
-          <div className="timer">
-           {wordcounter}
+          <div className="timer" ref={timerRef}>
             
-          {/* <CountdownCircleTimer
+            {wordcounter}
+
+            {/* <CountdownCircleTimer
             isPlaying
             duration={wordcounter}
             colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
@@ -218,7 +190,7 @@ const page = () => {
             
           </CountdownCircleTimer> */}
           </div>
-          <p id="givenword">{givenWord}</p>
+          <p id="givenword" ref={givenWordRef}>{givenWord}</p>
           <input
             type="text"
             id="enteruserword"
@@ -226,6 +198,7 @@ const page = () => {
             value={enteredWord}
             onChange={handlematch}
             autoFocus
+            ref={enteredWordRef}
           />
 
           <button id="enter" onClick={() => playagain()}>
