@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import thumbnail from "../images/thumbnail.png";
-import backgroundImage from "../images/background.jpg";
 import { Link, useNavigate } from 'react-router-dom';
-import Gamepage from './gamepage';
 
 const home=()=>{
-    const [name, setName] = useState('binit');
+    const [name, setName] = useState('');
     const [difficulty,setdifficulty]=useState('Easy');
     
     const navigate = useNavigate();
