@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import backgroundImage from "../images/background.jpg";
 import easydata from "../assets/easyWords.json";
 import mediumdata from "../assets/mediumWords.json";
 import harddata from "../assets/hardWords.json";
@@ -9,21 +8,21 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const page = () => {
   const location = useLocation();
   let level = location.state.level;
-  let difficultyFactor = 1.5;
+  let difficultyFactor:number = 1.5;
 
-  const [iter, setIter] = useState(1);
-  const [counter, setCounter] = useState(0);
-  const [wordCounter, setWordCounter] = useState(5);
-  const [enteredWord, setEnteredWord] = useState("");
+  const [iter, setIter] = useState<number>(1);
+  const [counter, setCounter] = useState<number>(0);
+  const [wordCounter, setWordCounter] = useState<number>(5);
+  const [enteredWord, setEnteredWord] = useState<String>("");
   const [givenWord, setGivenWord] = useState(mediumdata[0]);
-  const [stop, setStop] = useState(false);
-  const [scoredata, setScoreData] = useState([]);
-  const [wordCompleted, setWordCompleted]=useState(0);
+  const [stop, setStop] = useState<boolean>(false);
+  const [scoredata, setScoreData] = useState<any>([]);
+  const [wordCompleted, setWordCompleted]=useState<number>(0);
 
-  const timerRef=useRef();
-  const givenWordRef=useRef();
-  const enteredWordRef=useRef();
-  const highScoreRef=useRef();
+  const timerRef=useRef<HTMLDivElement | null>(null);
+  const givenWordRef=useRef<HTMLParagraphElement| null | number |any>(null);
+  const enteredWordRef=useRef<HTMLInputElement>(null);
+  const highScoreRef=useRef<HTMLDivElement>(null);
 
   if (level == "Easy") difficultyFactor = 1;
   else if (level == "Medium") difficultyFactor = 1.5;
@@ -56,17 +55,19 @@ const page = () => {
     if (wordCounter <= 0) {
       setStop(true);
       // console.log(scoredata);
-      timerRef.current.style.visibility = "hidden";
-      enteredWordRef.current.style.visibility = "hidden";
-      givenWordRef.current.style.color = "#ffbf00";
-      givenWordRef.current.innerHTML = counter;
+      timerRef.current!.style.visibility = "hidden";
+      enteredWordRef.current!.style.visibility = "hidden";
+      givenWordRef.current!.style.color = "#ffbf00";
+      // givenWordRef.current.style.fontSize="40px";
+      // givenWordRef.current.innerHTML = `Timer: ${counter} Word Completed: ${wordCompleted}`;
+      givenWordRef.current!.innerHTML=counter;
       
     }
   }, [counter]);
 
   function randomword() {
     // console.log(level);
-    givenWordRef.current.style.color = "#ffbf00";
+    givenWordRef.current!.style.color = "#ffbf00";
     if (level == "Easy") {
       const i = Math.floor(Math.random() * Object.keys(easydata).length);
       setGivenWord(easydata[i]);
@@ -88,34 +89,34 @@ const page = () => {
     // console.log(`wordCounter= ${wordCounter}`);
   }
 
-  function handlematch(e) {
+  function handlematch(e:any) {
     let temp=e.target.value;
     setEnteredWord(temp);
     if (temp === givenWord) {
       setWordCompleted((wordCompleted)=>wordCompleted+1);
-      givenWordRef.current.style.color = "green";
-      enteredWordRef.current.value="";
+      givenWordRef.current!.style.color = "green";
+      enteredWordRef.current!.value="";
       randomword();
       // console.log("Match!");
     } else {
-      givenWordRef.current.style.color = "red";
+      givenWordRef.current!.style.color = "red";
       // console.log("No match!");
     }
   }
 
   function playagain() {
     setIter(iter + 1);
-    enteredWordRef.current.value="";
+    enteredWordRef.current!.value="";
     setCounter(0);
     setWordCompleted(0);
     setStop(false);
     
     setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
-    scoredata.map((element, index) => {
+    scoredata.map((element:any) => {
       let max = 0;
       if (element.counter > max) {
         max = element.counter;
-        highScoreRef.current.innerHTML = `High score: ${max} `;
+        highScoreRef.current!.innerHTML = `High score: ${max} `;
       }
       return (
         <div>
@@ -124,9 +125,9 @@ const page = () => {
         </div>
       );
     });
-    timerRef.current.style.visibility = "visible";
-    enteredWordRef.current.style.visibility = "visible";
-    enteredWordRef.current.focus();
+    timerRef.current!.style.visibility = "visible";
+    enteredWordRef.current!.style.visibility = "visible";
+    enteredWordRef.current!.focus();
     randomword();
     // <Link to='/gamepage'></Link>
     // window.location.href = "/gamepage"
@@ -157,11 +158,11 @@ const page = () => {
           <hr />
           <div className="mainWindow--highScore" ref={highScoreRef}>High Score: 0 </div>
           <hr />
-          {scoredata.map((element, index) => {
+          {scoredata.map((element :any) => {
             let max = 0;
             if (element.counter > max) {
               max = element.counter;
-              highScoreRef.current.innerHTML = `High score: ${max} `;
+              highScoreRef.current!.innerHTML = `High score: ${max} `;
             }
             return (
               <div>
