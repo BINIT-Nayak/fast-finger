@@ -105,7 +105,7 @@ const page = () => {
 
   function playagain() {
     setIter(iter + 1);
-    setEnteredWord("");
+    enteredWordRef.current.value="";
     setCounter(0);
     setWordCompleted(0);
     setStop(false);
