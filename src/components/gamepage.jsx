@@ -18,6 +18,7 @@ const page = () => {
   const [givenWord, setGivenWord] = useState(mediumdata[0]);
   const [stop, setStop] = useState(false);
   const [scoredata, setScoreData] = useState([]);
+  const [wordCompleted, setWordCompleted]=useState(0);
 
   const timerRef=useRef();
   const givenWordRef=useRef();
@@ -91,6 +92,7 @@ const page = () => {
     let temp=e.target.value;
     setEnteredWord(temp);
     if (temp === givenWord) {
+      setWordCompleted((wordCompleted)=>wordCompleted+1);
       givenWordRef.current.style.color = "green";
       enteredWordRef.current.value="";
       randomword();
@@ -105,9 +107,10 @@ const page = () => {
     setIter(iter + 1);
     setEnteredWord("");
     setCounter(0);
+    setWordCompleted(0);
     setStop(false);
     
-    setScoreData([...scoredata.slice(-10), { iter, counter }]);
+    setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
     scoredata.map((element, index) => {
       let max = 0;
       if (element.counter > max) {
@@ -116,7 +119,8 @@ const page = () => {
       }
       return (
         <div>
-          Game {element.iter}: {element.counter}{" "}
+          Game {element.iter}= Time: {element.counter}{" "}
+          Word Completed: {element.wordCompleted}
         </div>
       );
     });
@@ -133,25 +137,25 @@ const page = () => {
       className="background"
     >
       <div className="profile">
-      <div className="leftprofile">
-        <div className="profilesubtitle">User: {location.state.user}</div>
-        <div className="profilesubtitle"> {level} Level</div>
+      <div className="profile--leftProfile">
+        <div className="gamePage__subtitle">User: {location.state.user}</div>
+        <div className="gamePage__subtitle"> {level} Level</div>
       </div>
 
-      <div className="scoreprofile">
-        <div className="profilesubtitle">Fast Fingers </div>
-        <div className="profilesubtitle"> Score: {counter} </div>
+      <div className="profile--scoreProfile">
+        <div className="gamePage__subtitle">Fast Fingers </div>
+        <div className="gamePage__subtitle"> Score: {counter} </div>
       </div>
       </div>
       
-      <div className="subtitle" id="gamenumber">
+      <div className="gamePage__subtitle" id="gameNumber">
         Game {iter}
       </div>
-      <div className="mainwindow">
-        <div className="scoreboard">
+      <div className="mainWindow">
+        <div className="mainWindow--scoreBoard">
           Score Board
           <hr />
-          <div id="highscore" ref={highScoreRef}>High Score: 0 </div>
+          <div className="mainWindow--highScore" ref={highScoreRef}>High Score: 0 </div>
           <hr />
           {scoredata.map((element, index) => {
             let max = 0;
@@ -161,14 +165,16 @@ const page = () => {
             }
             return (
               <div>
-                Game {element.iter}: {element.counter}{" "}
+                Game {element.iter}= Time: {element.counter}{" "}
+                
+                Word Completed: {element.wordCompleted}
               </div>
             );
           })}
         </div>
 
-        <div className="gamewindow">
-          <div className="timer" ref={timerRef}>
+        <div className="mainWindow--gameWindow">
+          <div className="gameWindow--timer" ref={timerRef}>
             
             {wordCounter}
 
@@ -191,10 +197,10 @@ const page = () => {
             
           </CountdownCircleTimer> */}
           </div>
-          <p id="givenword" ref={givenWordRef}>{givenWord}</p>
+          <p className="gameWindow--givenWord" ref={givenWordRef}>{givenWord}</p>
           <input
             type="text"
-            id="enteruserword"
+            className="gameWindow--enteredWord"
             placeholder="Enter the word here"
             
             onChange={handlematch}
@@ -202,10 +208,10 @@ const page = () => {
             ref={enteredWordRef}
           />
 
-          <button id="enter" onClick={() => playagain()}>
+          <button id="gameWindow--enter" onClick={() => playagain()}>
             Play Again
           </button>
-          <button id="enter" onClick={() => (window.location.href = "/")}>
+          <button id="gameWindow--enter" onClick={() => (window.location.href = "/")}>
             Quit Game
           </button>
         </div>

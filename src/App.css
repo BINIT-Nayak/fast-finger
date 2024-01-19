@@ -39,29 +39,6 @@ img{
   margin: auto;
 }
 
-.title{
-  text-decoration: solid;
-  font-family: 'Times New Roman', Times, serif;
-  text-align: center;
-  font-size: 7vw;
-  color: #fdfdff;
-}
-
-.subtitle{
-  margin: 10px;
-  padding: 10px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1.7vw;
-  color: #fdfdff; 
-}
-
-.profilesubtitle{
-  margin: 10px;
-  padding: 5px;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 20px;
-  color: #fdfdff;
-}
 input{
   margin: 10px;
   padding: 10px;
@@ -69,13 +46,6 @@ input{
   font-family: 'Times New Roman', Times, serif;
   border-radius: 10px;
   border: none;
-}
-
-#difficulty{
-  margin: 10px;
-  padding: 10px;
-  size: 50px;
-  color: #000;
 }
 
 button {
@@ -100,12 +70,46 @@ button:active {
   background-color:#797d81;
 }
 
-.scoreboard{
+.home--title{
+  text-decoration: solid;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
+  font-size: 7vw;
+  color: #fdfdff;
+}
+
+.home--subtitle{
+  margin: 10px;
+  padding: 10px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.7vw;
+  color: #fdfdff; 
+}
+
+.gamePage__subtitle{
+  margin: 10px;
+  padding: 5px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 30px;
+  color: #fdfdff;
+}
+
+
+.difficulty{
+  margin: 10px;
+  padding: 10px;
+  size: 50px;
+  color: #000;
+}
+
+
+
+.mainWindow--scoreBoard{
   border: rgb(66, 4, 4) 4px solid;
   
 }
 
-#thumbnail{
+.thumbnail{
   height: 200px;
   width: 200px;
   padding-top: 50px;
@@ -115,7 +119,7 @@ button:active {
   display: flex;
   justify-content:space-between;
 }
-.leftprofile{
+.profile--leftProfile{
   
   justify-content: center;
   align-items: center;
@@ -127,7 +131,7 @@ button:active {
   align-self: flex-start;
   text-align: start;
 }
-.scoreprofile{
+.profile--scoreProfile{
   
   justify-content: center;
   align-items: center;
@@ -138,14 +142,14 @@ button:active {
   align-self: flex-start;
   text-align: end;
 }
-#gamenumber{
+#gameNumber{
   display: inline-block;
   width: max-content;
   align-items: center;
   font-size: 30px;
 }
 
-.scoreboard{
+.mainWindow--scoreBoard{
   display: flex;
   width: max-content;
   height: max-content;
@@ -159,21 +163,21 @@ button:active {
   font-weight: bold;
 }
 
-.timer{
+.gameWindow--timer{
   display: inline-block;
   font-size: 50px;
   font-weight: bolder;
   color: white;
 }
 
-#givenword{
+.gameWindow--givenWord{
   display: block;
   margin: 0px;
   font-size: 80px;
   color: #f28500;
 }
 
-.mainwindow{
+.mainWindow{
   /* background-image: url('./images/background.jpg');
   background-repeat: repeat;
   background-size: contain; */
@@ -182,7 +186,7 @@ button:active {
   
 }
 
-.gamewindow{
+.mainWindow--gameWindow{
   
   display: flex;
   padding: 20px;
@@ -190,7 +194,7 @@ button:active {
 }
 
 @media screen and (max-width:550px) {
-  .mainwindow{
+  .mainWindow{
     display: block;
     
     background-image: url('./images/background.jpg');
@@ -206,12 +210,16 @@ button:active {
     
   }
 
-  .scoreboard{
-    margin-left: 33%;
+  .mainWindow--scoreBoard{
+    margin-left: 10%;
   }
 
-  .leftprofile,.scoreprofile{
+  .profile--leftProfile,.profile--scoreProfile{
     text-align: center;
+  }
+
+  .gamePage__subtitle{
+    font-size: 20px;
   }
 
 }

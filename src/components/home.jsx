@@ -22,19 +22,17 @@ const home=()=>{
      
     return(
         <div
-      className="background"
-      
-    >
-      <img id='thumbnail' src={thumbnail} alt="Thumbnail of game" />
-      <div className="title">Fast Finger</div>
-      <div className="subtitle">
+      className="background">
+      <img className='thumbnail' src={thumbnail} alt="Thumbnail of game" />
+      <div className="home--title">Fast Finger</div>
+      <div className="home--subtitle">
         -------------------the ultimate typing game----------------
       </div>
       
       {/* <input id="name" type="text" required placeholder="Enter your Name" onclick={navigate('/gamepage')} /> */}
       <input id="name" type="text" placeholder="Enter your Name" onChange={(e) => setName(e.target.value)}  />
       <div></div>
-      <select name="difficulty" id="difficulty"  onChange={(e)=>setdifficulty(e.target.value)}  >
+      <select name="difficulty" className="difficulty"  onChange={(e)=>setdifficulty(e.target.value)}  >
         <option value="Easy">Easy Level</option>
         <option value="Medium">Medium Level</option>
         <option value="Difficult">Difficult Level</option>
