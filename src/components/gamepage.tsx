@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import  { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import easydata from "../assets/easyWords.json";
-import mediumdata from "../assets/mediumWords.json";
-import harddata from "../assets/hardWords.json";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+// import easydata from "../assets/easyWords.json";
+// import mediumdata from "../assets/mediumWords.json";
+// import harddata from "../assets/hardWords.json";
+import data from "../assets/dictionary.json";
+// import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const page = () => {
   const location = useLocation();
@@ -13,8 +14,8 @@ const page = () => {
   const [iter, setIter] = useState<number>(1);
   const [counter, setCounter] = useState<number>(0);
   const [wordCounter, setWordCounter] = useState<number>(5);
-  const [enteredWord, setEnteredWord] = useState<String>("");
-  const [givenWord, setGivenWord] = useState(mediumdata[0]);
+  // const [enteredWord, setEnteredWord] = useState<String>("");
+  const [givenWord, setGivenWord] = useState(data[12347]);
   const [stop, setStop] = useState<boolean>(false);
   const [scoredata, setScoreData] = useState<any>([]);
   const [wordCompleted, setWordCompleted]=useState<number>(0);
@@ -65,38 +66,62 @@ const page = () => {
     }
   }, [counter]);
 
-  function randomword() {
-    // console.log(level);
+  const generateWord = (level:String) => {
     givenWordRef.current!.style.color = "#ffbf00";
-    if (level == "Easy") {
-      const i = Math.floor(Math.random() * Object.keys(easydata).length);
-      setGivenWord(easydata[i]);
-      // console.log(easydata[i]);
-    } else if (level == "Medium") {
-      const i = Math.floor(Math.random() * Object.keys(mediumdata).length);
-      setGivenWord(mediumdata[i]);
-      // console.log(mediumdata[i]);
-    } else {
-      const i = Math.floor(Math.random() * Object.keys(harddata).length);
-      setGivenWord(harddata[i]);
-      // console.log(harddata[i]);
+    function random(min:number, max:number) {
+      return Math.floor(Math.random() * (max - min + 1));
     }
+  
+    const dictonary = data.filter((word) => {
+      if (level == "Easy") {
+        return word.length <= 4;
+      } else if (level == "Medium") {
+        return word.length > 4 && word.length <= 8;
+      } else{
+        return word.length > 8;
+      }
+    });
+    const word = dictonary[random(0, dictonary.length - 1)];
 
+    setGivenWord(word);
     setWordCounter(Math.floor(givenWord.length / difficultyFactor));
     difficultyFactor = difficultyFactor + 0.01;
     if (difficultyFactor >= 1.5) level = "Medium";
     else if (difficultyFactor >= 2) level = "Difficult";
-    // console.log(`wordCounter= ${wordCounter}`);
-  }
+  };
+
+  // function randomword() {
+  //   // console.log(level);
+  //   givenWordRef.current!.style.color = "#ffbf00";
+  //   if (level == "Easy") {
+  //     const i = Math.floor(Math.random() * Object.keys(easydata).length);
+  //     setGivenWord(easydata[i]);
+  //     // console.log(easydata[i]);
+  //   } else if (level == "Medium") {
+  //     const i = Math.floor(Math.random() * Object.keys(mediumdata).length);
+  //     setGivenWord(mediumdata[i]);
+  //     // console.log(mediumdata[i]);
+  //   } else {
+  //     const i = Math.floor(Math.random() * Object.keys(harddata).length);
+  //     setGivenWord(harddata[i]);
+  //     // console.log(harddata[i]);
+  //   }
+
+  //   setWordCounter(Math.floor(givenWord.length / difficultyFactor));
+  //   difficultyFactor = difficultyFactor + 0.01;
+  //   if (difficultyFactor >= 1.5) level = "Medium";
+  //   else if (difficultyFactor >= 2) level = "Difficult";
+  //   // console.log(`wordCounter= ${wordCounter}`);
+  // }
 
   function handlematch(e:any) {
     let temp=e.target.value;
-    setEnteredWord(temp);
+    // setEnteredWord(temp);
     if (temp === givenWord) {
       setWordCompleted((wordCompleted)=>wordCompleted+1);
       givenWordRef.current!.style.color = "green";
       enteredWordRef.current!.value="";
-      randomword();
+      generateWord(level);
       // console.log("Match!");
     } else {
       givenWordRef.current!.style.color = "red";
@@ -128,7 +153,7 @@ const page = () => {
     timerRef.current!.style.visibility = "visible";
     enteredWordRef.current!.style.visibility = "visible";
     enteredWordRef.current!.focus();
-    randomword();
+    generateWord(level);
     // <Link to='/gamepage'></Link>
     // window.location.href = "/gamepage"
   }

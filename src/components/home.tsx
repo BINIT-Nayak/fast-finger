@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import thumbnail from "../images/thumbnail.png";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const home=()=>{
     const [name, setName] = useState('');
