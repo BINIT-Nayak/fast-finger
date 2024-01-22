@@ -167,6 +167,7 @@ const page = () => {
     scoredata,
     wordCounter,
     givenWord,
+    maxscore
   } = useGameplay(
     level,
     difficultyFactor,
@@ -202,11 +203,8 @@ const page = () => {
           </div>
           <hr />
           {scoredata.map((element: any) => {
-            let max = 0;
-            if (element.counter > max) {
-              max = element.counter;
-              highScoreRef.current!.innerHTML = `High score: ${max} `;
-            }
+              highScoreRef.current!.innerHTML = `High score: ${maxscore} `;
+            
             return (
               <div>
                 Game {element.iter}= Time: {element.counter} Word Completed:{" "}

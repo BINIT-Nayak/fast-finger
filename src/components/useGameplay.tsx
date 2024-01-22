@@ -16,7 +16,7 @@ const useGameplay = (
   const [wordCompleted, setWordCompleted] = useState<number>(0);
   const [iter, setIter] = useState<number>(1);
   const [scoredata, setScoreData] = useState<any>([]);
-  let max = 0;
+  const [maxscore,setmaxscore]=useState<number>(0);
 
   if (level == "Easy") difficultyFactor = 1;
   else if (level == "Medium") difficultyFactor = 1.5;
@@ -90,9 +90,9 @@ const useGameplay = (
 
     setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
     scoredata.map((element: any) => {
-      if (element.counter > max) {
-        max = element.counter;
-        highScoreRef.current!.innerHTML = `High score: ${max} `;
+      if (element.counter > maxscore) {
+        setmaxscore(element.counter);
+        highScoreRef.current!.innerHTML = `High score: ${element.counter} `;
       }
       return (
         <div>
@@ -114,6 +114,7 @@ const useGameplay = (
     scoredata,
     wordCounter,
     givenWord,
+    maxscore
   };
 };
 
