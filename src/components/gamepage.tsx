@@ -1,179 +1,195 @@
-import  { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 // import easydata from "../assets/easyWords.json";
 // import mediumdata from "../assets/mediumWords.json";
 // import harddata from "../assets/hardWords.json";
-import data from "../assets/dictionary.json";
+// import data from "../assets/dictionary.json";
+import useGameplay from "./useGameplay";
 // import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const page = () => {
   const location = useLocation();
   let level = location.state.level;
-  let difficultyFactor:number = 1.5;
+  let difficultyFactor: number = 1.5;
 
-  const [iter, setIter] = useState<number>(1);
-  const [counter, setCounter] = useState<number>(0);
-  const [wordCounter, setWordCounter] = useState<number>(5);
-  // const [enteredWord, setEnteredWord] = useState<String>("");
-  const [givenWord, setGivenWord] = useState(data[12347]);
-  const [stop, setStop] = useState<boolean>(false);
-  const [scoredata, setScoreData] = useState<any>([]);
-  const [wordCompleted, setWordCompleted]=useState<number>(0);
+  // const [iter, setIter] = useState<number>(1);
+  // const [counter, setCounter] = useState<number>(0);
+  // const [wordCounter, setWordCounter] = useState<number>(5);
+  // // const [enteredWord, setEnteredWord] = useState<String>("");
+  // const [givenWord, setGivenWord] = useState(data[12347]);
+  // const [stop, setStop] = useState<boolean>(false);
+  // const [scoredata, setScoreData] = useState<any>([]);
+  // const [wordCompleted, setWordCompleted]=useState<number>(0);
 
-  const timerRef=useRef<HTMLDivElement | null>(null);
-  const givenWordRef=useRef<HTMLParagraphElement| null | number |any>(null);
-  const enteredWordRef=useRef<HTMLInputElement>(null);
-  const highScoreRef=useRef<HTMLDivElement>(null);
+  const timerRef = useRef<HTMLDivElement | null>(null);
+  const givenWordRef = useRef<HTMLParagraphElement | null | number | any>(null);
+  const enteredWordRef = useRef<HTMLInputElement>(null);
+  const highScoreRef = useRef<HTMLDivElement>(null);
 
-  if (level == "Easy") difficultyFactor = 1;
-  else if (level == "Medium") difficultyFactor = 1.5;
-  else difficultyFactor = 2;
+  // if (level == "Easy") difficultyFactor = 1;
+  // else if (level == "Medium") difficultyFactor = 1.5;
+  // else difficultyFactor = 2;
+
+  // // useEffect(() => {
+  // //   const interval = setInterval(() => {
+  // //     setCounter((counter) => counter + 1);
+  // //   }, 1000);
+  // //   return () => {
+  // //     clearInterval(interval);
+  // //   };
+  // // }, []);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
+  //     if (stop) {
+  //       clearInterval(interval);
+  //       return;
+  //     }
+
   //     setCounter((counter) => counter + 1);
+  //     setWordCounter((wordCounter) => wordCounter - 1);
   //   }, 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (stop) {
-        clearInterval(interval);
-        return;
-      }
+  //   return () => clearInterval(interval);
+  // }, [stop]);
 
-      setCounter((counter) => counter + 1);
-      setWordCounter((wordCounter) => wordCounter - 1);
-    }, 1000);
+  // useEffect(() => {
+  //   if (wordCounter <= 0) {
+  //     setStop(true);
+  //     // console.log(scoredata);
+  //     timerRef.current!.style.visibility = "hidden";
+  //     enteredWordRef.current!.style.visibility = "hidden";
+  //     givenWordRef.current!.style.color = "#ffbf00";
+  //     // givenWordRef.current.style.fontSize="40px";
+  //     // givenWordRef.current.innerHTML = `Timer: ${counter} Word Completed: ${wordCompleted}`;
+  //     givenWordRef.current!.innerHTML=counter;
 
-    return () => clearInterval(interval);
-  }, [stop]);
+  //   }
+  // }, [counter]);
 
-  useEffect(() => {
-    if (wordCounter <= 0) {
-      setStop(true);
-      // console.log(scoredata);
-      timerRef.current!.style.visibility = "hidden";
-      enteredWordRef.current!.style.visibility = "hidden";
-      givenWordRef.current!.style.color = "#ffbf00";
-      // givenWordRef.current.style.fontSize="40px";
-      // givenWordRef.current.innerHTML = `Timer: ${counter} Word Completed: ${wordCompleted}`;
-      givenWordRef.current!.innerHTML=counter;
-      
-    }
-  }, [counter]);
-
-  const generateWord = (level:String) => {
-    givenWordRef.current!.style.color = "#ffbf00";
-    function random(min:number, max:number) {
-      return Math.floor(Math.random() * (max - min + 1));
-    }
-  
-    const dictonary = data.filter((word) => {
-      if (level == "Easy") {
-        return word.length <= 4;
-      } else if (level == "Medium") {
-        return word.length > 4 && word.length <= 8;
-      } else{
-        return word.length > 8;
-      }
-    });
-    const word = dictonary[random(0, dictonary.length - 1)];
-
-    setGivenWord(word);
-    setWordCounter(Math.floor(givenWord.length / difficultyFactor));
-    difficultyFactor = difficultyFactor + 0.01;
-    if (difficultyFactor >= 1.5) level = "Medium";
-    else if (difficultyFactor >= 2) level = "Difficult";
-  };
-
-  // function randomword() {
-  //   // console.log(level);
+  // const generateWord = (level:String) => {
   //   givenWordRef.current!.style.color = "#ffbf00";
-  //   if (level == "Easy") {
-  //     const i = Math.floor(Math.random() * Object.keys(easydata).length);
-  //     setGivenWord(easydata[i]);
-  //     // console.log(easydata[i]);
-  //   } else if (level == "Medium") {
-  //     const i = Math.floor(Math.random() * Object.keys(mediumdata).length);
-  //     setGivenWord(mediumdata[i]);
-  //     // console.log(mediumdata[i]);
-  //   } else {
-  //     const i = Math.floor(Math.random() * Object.keys(harddata).length);
-  //     setGivenWord(harddata[i]);
-  //     // console.log(harddata[i]);
+  //   function random(min:number, max:number) {
+  //     return Math.floor(Math.random() * (max - min + 1));
   //   }
 
+  //   const dictonary = data.filter((word) => {
+  //     if (level == "Easy") {
+  //       return word.length <= 4;
+  //     } else if (level == "Medium") {
+  //       return word.length > 4 && word.length <= 8;
+  //     } else{
+  //       return word.length > 8;
+  //     }
+  //   });
+  //   const word = dictonary[random(0, dictonary.length - 1)];
+
+  //   setGivenWord(word);
   //   setWordCounter(Math.floor(givenWord.length / difficultyFactor));
   //   difficultyFactor = difficultyFactor + 0.01;
   //   if (difficultyFactor >= 1.5) level = "Medium";
   //   else if (difficultyFactor >= 2) level = "Difficult";
-  //   // console.log(`wordCounter= ${wordCounter}`);
+  // };
+
+  // // function randomword() {
+  // //   // console.log(level);
+  // //   givenWordRef.current!.style.color = "#ffbf00";
+  // //   if (level == "Easy") {
+  // //     const i = Math.floor(Math.random() * Object.keys(easydata).length);
+  // //     setGivenWord(easydata[i]);
+  // //     // console.log(easydata[i]);
+  // //   } else if (level == "Medium") {
+  // //     const i = Math.floor(Math.random() * Object.keys(mediumdata).length);
+  // //     setGivenWord(mediumdata[i]);
+  // //     // console.log(mediumdata[i]);
+  // //   } else {
+  // //     const i = Math.floor(Math.random() * Object.keys(harddata).length);
+  // //     setGivenWord(harddata[i]);
+  // //     // console.log(harddata[i]);
+  // //   }
+
+  // //   setWordCounter(Math.floor(givenWord.length / difficultyFactor));
+  // //   difficultyFactor = difficultyFactor + 0.01;
+  // //   if (difficultyFactor >= 1.5) level = "Medium";
+  // //   else if (difficultyFactor >= 2) level = "Difficult";
+  // //   // console.log(`wordCounter= ${wordCounter}`);
+  // // }
+
+  // function handlematch(e:any) {
+  //   let temp=e.target.value;
+  //   // setEnteredWord(temp);
+  //   if (temp === givenWord) {
+  //     setWordCompleted((wordCompleted)=>wordCompleted+1);
+  //     givenWordRef.current!.style.color = "green";
+  //     enteredWordRef.current!.value="";
+  //     generateWord(level);
+  //     // console.log("Match!");
+  //   } else {
+  //     givenWordRef.current!.style.color = "red";
+  //     // console.log("No match!");
+  //   }
   // }
 
-  function handlematch(e:any) {
-    let temp=e.target.value;
-    // setEnteredWord(temp);
-    if (temp === givenWord) {
-      setWordCompleted((wordCompleted)=>wordCompleted+1);
-      givenWordRef.current!.style.color = "green";
-      enteredWordRef.current!.value="";
-      generateWord(level);
-      // console.log("Match!");
-    } else {
-      givenWordRef.current!.style.color = "red";
-      // console.log("No match!");
-    }
-  }
+  // function playagain() {
+  //   setIter(iter + 1);
+  //   enteredWordRef.current!.value="";
+  //   setCounter(0);
+  //   setWordCompleted(0);
+  //   setStop(false);
 
-  function playagain() {
-    setIter(iter + 1);
-    enteredWordRef.current!.value="";
-    setCounter(0);
-    setWordCompleted(0);
-    setStop(false);
-    
-    setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
-    scoredata.map((element:any) => {
-      let max = 0;
-      if (element.counter > max) {
-        max = element.counter;
-        highScoreRef.current!.innerHTML = `High score: ${max} `;
-      }
-      return (
-        <div>
-          Game {element.iter}= Time: {element.counter}{" "}
-          Word Completed: {element.wordCompleted}
-        </div>
-      );
-    });
-    timerRef.current!.style.visibility = "visible";
-    enteredWordRef.current!.style.visibility = "visible";
-    enteredWordRef.current!.focus();
-    generateWord(level);
-    // <Link to='/gamepage'></Link>
-    // window.location.href = "/gamepage"
-  }
+  //   setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
+  //   scoredata.map((element:any) => {
+  //     let max = 0;
+  //     if (element.counter > max) {
+  //       max = element.counter;
+  //       highScoreRef.current!.innerHTML = `High score: ${max} `;
+  //     }
+  //     return (
+  //       <div>
+  //         Game {element.iter}= Time: {element.counter}{" "}
+  //         Word Completed: {element.wordCompleted}
+  //       </div>
+  //     );
+  //   });
+  //   timerRef.current!.style.visibility = "visible";
+  //   enteredWordRef.current!.style.visibility = "visible";
+  //   enteredWordRef.current!.focus();
+  //   generateWord(level);
+  //   // <Link to='/gamepage'></Link>
+  //   // window.location.href = "/gamepage"
+  // }
+
+  const {
+    handlematch,
+    playagain,
+    counter,
+    iter,
+    scoredata,
+    wordCounter,
+    givenWord,
+  } = useGameplay(
+    level,
+    difficultyFactor,
+    timerRef,
+    givenWordRef,
+    enteredWordRef,
+    highScoreRef
+  );
 
   return (
-    <div
-      className="background"
-    >
+    <div className="background">
       <div className="profile">
-      <div className="profile--leftProfile">
-        <div className="gamePage__subtitle">User: {location.state.user}</div>
-        <div className="gamePage__subtitle"> {level} Level</div>
+        <div className="profile--leftProfile">
+          <div className="gamePage__subtitle">User: {location.state.user}</div>
+          <div className="gamePage__subtitle"> {level} Level</div>
+        </div>
+
+        <div className="profile--scoreProfile">
+          <div className="gamePage__subtitle">Fast Fingers </div>
+          <div className="gamePage__subtitle"> Score: {counter} </div>
+        </div>
       </div>
 
-      <div className="profile--scoreProfile">
-        <div className="gamePage__subtitle">Fast Fingers </div>
-        <div className="gamePage__subtitle"> Score: {counter} </div>
-      </div>
-      </div>
-      
       <div className="gamePage__subtitle" id="gameNumber">
         Game {iter}
       </div>
@@ -181,9 +197,11 @@ const page = () => {
         <div className="mainWindow--scoreBoard">
           Score Board
           <hr />
-          <div className="mainWindow--highScore" ref={highScoreRef}>High Score: 0 </div>
+          <div className="mainWindow--highScore" ref={highScoreRef}>
+            High Score: 0{" "}
+          </div>
           <hr />
-          {scoredata.map((element :any) => {
+          {scoredata.map((element: any) => {
             let max = 0;
             if (element.counter > max) {
               max = element.counter;
@@ -191,9 +209,8 @@ const page = () => {
             }
             return (
               <div>
-                Game {element.iter}= Time: {element.counter}{" "}
-                
-                Word Completed: {element.wordCompleted}
+                Game {element.iter}= Time: {element.counter} Word Completed:{" "}
+                {element.wordCompleted}
               </div>
             );
           })}
@@ -201,7 +218,6 @@ const page = () => {
 
         <div className="mainWindow--gameWindow">
           <div className="gameWindow--timer" ref={timerRef}>
-            
             {wordCounter}
 
             {/* <CountdownCircleTimer
@@ -223,12 +239,13 @@ const page = () => {
             
           </CountdownCircleTimer> */}
           </div>
-          <p className="gameWindow--givenWord" ref={givenWordRef}>{givenWord}</p>
+          <p className="gameWindow--givenWord" ref={givenWordRef}>
+            {givenWord}
+          </p>
           <input
             type="text"
             className="gameWindow--enteredWord"
             placeholder="Enter the word here"
-            
             onChange={handlematch}
             autoFocus
             ref={enteredWordRef}
@@ -237,7 +254,10 @@ const page = () => {
           <button id="gameWindow--enter" onClick={() => playagain()}>
             Play Again
           </button>
-          <button id="gameWindow--enter" onClick={() => (window.location.href = "/")}>
+          <button
+            id="gameWindow--enter"
+            onClick={() => (window.location.href = "/")}
+          >
             Quit Game
           </button>
         </div>
