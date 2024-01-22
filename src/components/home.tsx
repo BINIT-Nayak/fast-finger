@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const home = () => {
   const [name, setName] = useState("");
   const [difficulty, setdifficulty] = useState("Easy");
+  //nsome
 
   const navigate = useNavigate();
   function validate() {
