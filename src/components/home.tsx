@@ -31,6 +31,7 @@ const home = () => {
       {/* <input id="name" type="text" required placeholder="Enter your Name" onclick={navigate('/gamepage')} /> */}
       <input
         id="name"
+        data-testid="name-input"
         type="text"
         placeholder="Enter your Name"
         onChange={(e) => setName(e.target.value)}

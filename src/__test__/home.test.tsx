@@ -22,3 +22,22 @@ test("Is name entered or not",()=>{
     expect(input).toHaveAttribute('type', 'text');
 })
 
+test('updates name in state when input changes', () => {
+    
+  render(<App />);
+  const input = screen.getByTestId('name-input');
+  fireEvent.change(input, {target: {value: 'Binit'}});
+  expect(input).toHaveValue('Binit'); 
+
+});
+
+test('selects dropdown value and updates state', () => {
+
+  render(<App />);
+  const dropdown = screen.getByRole('combobox');
+  fireEvent.change(dropdown, {target: {value: 'Medium'}});
+  expect(dropdown).toHaveValue('Medium');
+  // expect(screen.getByDisplayValue('Medium')).toBeInTheDocument();
+  
+
+});
