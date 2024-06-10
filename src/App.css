@@ -21,29 +21,25 @@ img {
 input {
   margin: 10px;
   padding: 10px;
-  font-size: larger;
+  font-size: 20px;
   font-family: "Times New Roman", Times, serif;
   border-radius: 10px;
   border: none;
+  cursor: pointer;
 }
 
 button {
-  margin: 10px;
-  top: 50%;
   background-color: #000;
   color: #f28500;
-  font-size: 100px;
+  font-size: 25px;
   border: none;
   border-radius: 10px;
-  padding: 15px;
-  min-height: 50px;
-  min-width: 200px;
+  padding: 15px 30px;
+  cursor: pointer;
 }
 
 button:hover {
   background-color: #ffbf00;
+  color: black;
   transition: 0.7s;
-}
-button:active {
-  background-color: #797d81;
 }

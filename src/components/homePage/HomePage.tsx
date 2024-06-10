@@ -1,58 +1,47 @@
-import "./homePage.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import thumbnail from "../../assets/images/thumbnail.png";
+import "./homePage.css";
 
-export const HomePage = () => {
-  const [name, setName] = useState("");
-  const [difficulty, setdifficulty] = useState("Easy");
+type difficulty = "Easy" | "Medium" | "Hard";
 
-  const navigate = useNavigate();
-  function validate() {
-    if (name.length == 0 || name.trim() == "") {
+export const HomePage = (props: {
+  navigateToGamePage: (arg0: string, arg1: string) => void;
+}) => {
+  const [name, setName] = useState<string>("");
+  const [difficulty, setDifficulty] = useState<difficulty>("Easy");
+
+  const NameValidate = () => {
+    if (name.trim().length == 0) {
       alert("Name not Entered");
       return;
     } else {
-      navigate("/gamepage", { state: { level: difficulty, user: name } });
+      props.navigateToGamePage(difficulty, name);
     }
-  }
+  };
 
   return (
-    <div className="background">
-      <img className="thumbnail" src={thumbnail} alt="Thumbnail of game" />
-      <div className="home--title">Fast Finger</div>
-      <div className="home--subtitle">
+    <div className="homePage">
+      <div className="thumbnail" />
+      <div className="title">Fast Finger</div>
+      <div className="subtitle">
         -------------------the ultimate typing game----------------
       </div>
 
       <input
-        id="name"
         data-testid="name-input"
-        type="text"
         placeholder="Enter your Name"
         onChange={(e) => setName(e.target.value)}
       />
-      <div></div>
       <select
-        name="difficulty"
-        className="difficulty"
-        onChange={(e) => setdifficulty(e.target.value)}
+        className="difficultySelector"
+        onChange={(e) =>
+          setDifficulty(e.target.value as "Easy" | "Medium" | "Hard")
+        }
       >
         <option value="Easy">Easy Level</option>
         <option value="Medium">Medium Level</option>
-        <option value="Difficult">Difficult Level</option>
+        <option value="Hard">Hard Level</option>
       </select>
-      <br />
-      <button
-        id="enter"
-        style={{ cursor: "pointer" }}
-        onClick={() => {
-          validate();
-        }}
-      >
-        {" "}
-        Start Game
-      </button>
+      <button onClick={NameValidate}>Start Game</button>
     </div>
   );
 };

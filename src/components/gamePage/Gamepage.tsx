@@ -1,11 +1,16 @@
-import './gamePage.css';
 import { useRef } from "react";
-import { useLocation } from "react-router-dom";
 import useGameplay from "../../hooks/useGameplay";
+import "./gamePage.css";
 
-export const GamePage = () => {
-  const location = useLocation();
-  let level = location.state.level;
+type difficulty = "Easy" | "Medium" | "Hard";
+
+export const GamePage = (props: {
+  difficulty: difficulty;
+  name: string;
+  navigateToHomePage: () => void;
+}) => {
+  const level: difficulty = props.difficulty;
+  const userName: string = props.name;
   let difficultyFactor: number = 1.5;
 
   const timerRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +40,7 @@ export const GamePage = () => {
     <div className="background">
       <div className="profile">
         <div className="profile--leftProfile">
-          <div className="gamePage__subtitle">User: {location.state.user}</div>
+          <div className="gamePage__subtitle">User: {userName}</div>
           <div className="gamePage__subtitle"> {level} Level</div>
         </div>
 
@@ -87,10 +92,7 @@ export const GamePage = () => {
           <button id="gameWindow--enter" onClick={() => playagain()}>
             Play Again
           </button>
-          <button
-            id="gameWindow--enter"
-            onClick={() => (window.location.href = "/")}
-          >
+          <button id="gameWindow--enter" onClick={props.navigateToHomePage}>
             Quit Game
           </button>
         </div>
@@ -98,4 +100,3 @@ export const GamePage = () => {
     </div>
   );
 };
-
