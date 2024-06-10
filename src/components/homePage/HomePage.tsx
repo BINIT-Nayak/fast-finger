@@ -20,9 +20,9 @@ export const HomePage = (props: {
 
   return (
     <div className="homePage">
-      <div className="thumbnail" />
-      <div className="title">Fast Finger</div>
-      <div className="subtitle">
+      <div className="homePage__thumbnail" />
+      <div className="homePage__title">Fast Finger</div>
+      <div className="homePage__subtitle">
         -------------------the ultimate typing game----------------
       </div>
 
@@ -32,7 +32,7 @@ export const HomePage = (props: {
         onChange={(e) => setName(e.target.value)}
       />
       <select
-        className="difficultySelector"
+        className="homePage__difficultySelector"
         onChange={(e) =>
           setDifficulty(e.target.value as "Easy" | "Medium" | "Hard")
         }
@@ -41,7 +41,7 @@ export const HomePage = (props: {
         <option value="Medium">Medium Level</option>
         <option value="Hard">Hard Level</option>
       </select>
-      <button onClick={NameValidate}>Start Game</button>
+      <button className='homePage__button' onClick={NameValidate}>Start Game</button>
     </div>
   );
 };

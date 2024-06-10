@@ -1,89 +1,103 @@
-.gamePage__subtitle {
-  margin: 10px;
-  padding: 5px;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-  font-size: 30px;
-  color: #fdfdff;
-}
-
-.mainWindow--scoreBoard {
-  border: rgb(66, 4, 4) 4px solid;
-}
-
-.profile {
+.gamePage {
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-}
-.profile--leftProfile {
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  display: inline-block;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-  align-self: flex-start;
-  text-align: start;
-}
-.profile--scoreProfile {
-  justify-content: center;
-  align-items: center;
-  display: inline-block;
-  flex-direction: column;
-
-  align-items: flex-start;
-  align-self: flex-start;
-  text-align: end;
+  gap: 5px;
 }
 
-#gameNumber {
-  display: inline-block;
-  width: max-content;
-  align-items: center;
-  font-size: 30px;
-}
-
-.mainWindow--scoreBoard {
-  display: flex;
-  width: max-content;
-  height: max-content;
-  margin: 10px 0px 0px 40px;
-  flex-direction: column;
-  padding: 20px;
+.gamePage__title {
+  font-family: "Times New Roman", Times, serif;
   text-align: center;
-
-  align-content: space-between;
-  color: white;
+  font-size: 70px;
+  color: #f28500;
   font-weight: bold;
 }
 
-.gameWindow--timer {
+.gamePage__profile {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  color: #fdfdff;
+  gap: 35%;
+}
+
+.profile__element {
+  margin: 5px;
+}
+
+.profile__element--gameNumber {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.gamePage__main {
+  display: flex;
+  gap: 20%;
+}
+
+.gamePage__main__scoreBoard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: max-content;
+  padding: 20px;
+  background-color: rgb(164, 147, 126);
+  border-radius: 10px;
+  gap: 10px;
+  color: black;
+}
+
+.scoreBoard__title,
+.scoreBoard__highScore {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  color: #fdfdff;
+  font-weight: bold;
+}
+
+.gamePage__main__playArea {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.playArea__timer {
   display: inline-block;
   font-size: 50px;
   font-weight: bolder;
   color: white;
 }
 
-.gameWindow--givenWord {
+.playArea__givenWord {
   display: block;
   margin: 0px;
   font-size: 80px;
   color: #f28500;
 }
 
-.mainWindow {
-  display: flex;
-  justify-content: space-evenly;
+.gamePageButton {
+  background-color: #000;
+  color: #f28500;
+  font-size: 25px;
+  width: 270px;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  cursor: pointer;
 }
 
-.mainWindow--gameWindow {
-  display: flex;
-  padding: 20px;
-  flex-direction: column;
+.gamePageButton:hover {
+  background-color: #ffbf00;
+  color: black;
+  transition: 0.7s;
 }
 
 @media screen and (max-width: 550px) {
-  .mainWindow {
+  .gamePage__main {
     display: block;
 
     background-image: url("./images/background.jpg");
@@ -98,7 +112,7 @@
     align-items: center;
   }
 
-  .mainWindow--scoreBoard {
+  .gamePage__main--scoreBoard {
     margin-left: 10%;
   }
 
