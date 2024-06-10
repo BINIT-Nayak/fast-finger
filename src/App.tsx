@@ -6,16 +6,16 @@ import {
 } from "react-router-dom";
 import "./App.css";
 
-import Gamepage from "./components/gamePage/Gamepage";
-import Home from "./components/homePage/HomePage";
+import { GamePage } from "./components/gamePage/GamePage";
+import { HomePage } from "./components/homePage";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/gamepage" element={<Gamepage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/gamepage" element={<GamePage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>

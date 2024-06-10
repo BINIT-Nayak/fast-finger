@@ -1,8 +1,9 @@
+import './gamePage.css';
 import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import useGameplay from "../../hooks/useGameplay";
 
-const page = () => {
+export const GamePage = () => {
   const location = useLocation();
   let level = location.state.level;
   let difficultyFactor: number = 1.5;
@@ -98,4 +99,3 @@ const page = () => {
   );
 };
 
-export default page;

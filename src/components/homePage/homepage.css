@@ -1,0 +1,58 @@
+.home--title {
+  text-decoration: solid;
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
+  font-size: 7vw;
+  color: #fdfdff;
+}
+
+.home--subtitle {
+  margin: 10px;
+  padding: 10px;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.7vw;
+  color: #fdfdff;
+}
+
+.difficulty {
+  margin: 10px;
+  padding: 10px;
+  size: 50px;
+  color: #000;
+}
+
+.thumbnail {
+  height: 200px;
+  width: 200px;
+  padding-top: 50px;
+}
+
+@media screen and (max-width: 550px) {
+  .mainWindow {
+    display: block;
+
+    background-image: url("./images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .profile {
+    margin-left: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mainWindow--scoreBoard {
+    margin-left: 10%;
+  }
+
+  .profile--leftProfile,
+  .profile--scoreProfile {
+    text-align: center;
+  }
+
+  .gamePage__subtitle {
+    font-size: 20px;
+  }
+}

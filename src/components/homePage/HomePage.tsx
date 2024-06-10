@@ -1,11 +1,11 @@
+import "./homePage.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import thumbnail from "../images/thumbnail.png";
+import thumbnail from "../../assets/images/thumbnail.png";
 
-const home = () => {
+export const HomePage = () => {
   const [name, setName] = useState("");
   const [difficulty, setdifficulty] = useState("Easy");
-  //nsome
 
   const navigate = useNavigate();
   function validate() {
@@ -13,9 +13,6 @@ const home = () => {
       alert("Name not Entered");
       return;
     } else {
-      // console.log("game page");
-      // <Link to='/gamepage'>Game Page</Link>
-      // <Link to={{pathname: '/gamepage', state:{level:difficulty, user: name}}}></Link>
       navigate("/gamepage", { state: { level: difficulty, user: name } });
     }
   }
@@ -28,7 +25,6 @@ const home = () => {
         -------------------the ultimate typing game----------------
       </div>
 
-      {/* <input id="name" type="text" required placeholder="Enter your Name" onclick={navigate('/gamepage')} /> */}
       <input
         id="name"
         data-testid="name-input"
@@ -60,5 +56,3 @@ const home = () => {
     </div>
   );
 };
-
-export default home;
