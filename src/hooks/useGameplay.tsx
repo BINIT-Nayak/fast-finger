@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import data from "../assets/dictionary.json";
 
 const useGameplay = (
@@ -16,7 +16,7 @@ const useGameplay = (
   const [wordCompleted, setWordCompleted] = useState<number>(0);
   const [iter, setIter] = useState<number>(1);
   const [scoredata, setScoreData] = useState<any>([]);
-  const [maxscore,setmaxscore]=useState<number>(0);
+  const [maxscore, setmaxscore] = useState<number>(0);
 
   if (level == "Easy") difficultyFactor = 1;
   else if (level == "Medium") difficultyFactor = 1.5;
@@ -114,7 +114,7 @@ const useGameplay = (
     scoredata,
     wordCounter,
     givenWord,
-    maxscore
+    maxscore,
   };
 };
 

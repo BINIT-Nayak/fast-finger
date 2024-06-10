@@ -1,6 +1,6 @@
 import { useState } from "react";
-import thumbnail from "../images/thumbnail.png";
 import { useNavigate } from "react-router-dom";
+import thumbnail from "../images/thumbnail.png";
 
 const home = () => {
   const [name, setName] = useState("");

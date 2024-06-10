@@ -169,9 +169,6 @@ button:active {
 }
 
 .mainWindow {
-  /* background-image: url('./images/background.jpg');
-  background-repeat: repeat;
-  background-size: contain; */
   display: flex;
   justify-content: space-evenly;
 }

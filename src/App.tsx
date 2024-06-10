@@ -1,13 +1,13 @@
-import "./App.css";
 import {
+  Navigate,
+  Route,
   MemoryRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
+import "./App.css";
 
-import Home from "./components/home";
-import Gamepage from "./components/gamepage";
+import Gamepage from "./components/gamePage/Gamepage";
+import Home from "./components/homePage/HomePage";
 
 function App() {
   return (
