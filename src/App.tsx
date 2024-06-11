@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { GamePage } from "./components/gamePage/GamePage";
+import { GamePage } from "./components/gamePage";
 import { HomePage } from "./components/homePage";
 
 function App() {
@@ -15,16 +15,22 @@ function App() {
     setDifficulty(difficulty as "Easy" | "Medium" | "Hard");
   };
 
-  const navigateToHomePage =()=>{
+  const navigateToHomePage = () => {
     setCurrentPage("HomePage");
-  }
+  };
 
   const renderPage = () => {
     switch (currentPage) {
       case "HomePage":
         return <HomePage navigateToGamePage={navigateToGamePage} />;
       case "GamePage":
-        return <GamePage name={name} difficulty={difficulty} navigateToHomePage={navigateToHomePage} />;
+        return (
+          <GamePage
+            name={name}
+            difficulty={difficulty}
+            navigateToHomePage={navigateToHomePage}
+          />
+        );
       default:
         return null;
     }
