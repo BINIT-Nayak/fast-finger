@@ -12,7 +12,7 @@ Reat Vite - Boilerplate/tooling
 Usage
 To run the app locally:
 
-## MVP Requirement
+# MVP Requirement
 
 1. Ask player to enter his/her name before starting the game.
 
