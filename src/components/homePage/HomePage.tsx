@@ -4,7 +4,7 @@ import "./homePage.css";
 type difficulty = "Easy" | "Medium" | "Hard";
 
 export const HomePage = (props: {
-  navigateToGamePage: (arg0: string, arg1: string) => void;
+  navigateToGamePage: (arg0: difficulty, arg1: string) => void;
 }) => {
   const [name, setName] = useState<string>("");
   const [difficulty, setDifficulty] = useState<difficulty>("Easy");

@@ -1,121 +1,150 @@
 import { useEffect, useState } from "react";
 import data from "../assets/dictionary.json";
 
-const useGameplay = (
-  level: any,
-  difficultyFactor: number,
-  timerRef: any,
-  givenWordRef: any,
-  enteredWordRef: any,
-  highScoreRef: any
-) => {
-  const [counter, setCounter] = useState<number>(0);
-  const [wordCounter, setWordCounter] = useState<number>(5);
-  const [stop, setStop] = useState<boolean>(false);
-  const [givenWord, setGivenWord] = useState(data[12347]);
-  const [wordCompleted, setWordCompleted] = useState<number>(0);
-  const [iter, setIter] = useState<number>(1);
-  const [scoredata, setScoreData] = useState<any>([]);
-  const [maxscore, setmaxscore] = useState<number>(0);
+export const useGameplay = (initialLevel: string) => {
+  const getRandomWord = (currentLevel: string) => {
+    const random = (min: number, max: number) =>
+      Math.floor(Math.random() * (max - min + 1)) + min;
 
-  if (level == "Easy") difficultyFactor = 1;
-  else if (level == "Medium") difficultyFactor = 1.5;
-  else difficultyFactor = 2;
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (stop) {
-        clearInterval(interval);
-        return;
-      }
-
-      setCounter((counter) => counter + 1);
-      setWordCounter((wordCounter) => wordCounter - 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [stop]);
-
-  useEffect(() => {
-    if (wordCounter <= 0) {
-      setStop(true);
-      timerRef.current!.style.visibility = "hidden";
-      enteredWordRef.current!.style.visibility = "hidden";
-      givenWordRef.current!.style.color = "#ffbf00";
-      givenWordRef.current!.innerHTML = counter;
-    }
-  }, [counter]);
-
-  const generateWord = (level: String) => {
-    givenWordRef.current!.style.color = "#ffbf00";
-    function random(min: number, max: number) {
-      return Math.floor(Math.random() * (max - min + 1));
-    }
-
-    const dictonary = data.filter((word) => {
-      if (level == "Easy") {
+    const filteredData = data.filter((word) => {
+      if (currentLevel === "Easy") {
         return word.length <= 4;
-      } else if (level == "Medium") {
+      } else if (currentLevel === "Medium") {
         return word.length > 4 && word.length <= 8;
       } else {
         return word.length > 8;
       }
     });
-    const word = dictonary[random(0, dictonary.length - 1)];
 
-    setGivenWord(word);
-    setWordCounter(Math.floor(givenWord.length / difficultyFactor));
-    difficultyFactor = difficultyFactor + 0.01;
-    if (difficultyFactor >= 1.5) level = "Medium";
-    else if (difficultyFactor >= 2) level = "Difficult";
+    const randomIndex = random(0, filteredData.length - 1);
+    return filteredData[randomIndex];
   };
 
-  function handlematch(e: any) {
-    let temp = e.target.value;
-    if (temp === givenWord) {
-      setWordCompleted((wordCompleted) => wordCompleted + 1);
-      givenWordRef.current!.style.color = "green";
-      enteredWordRef.current!.value = "";
-      generateWord(level);
-    } else {
-      givenWordRef.current!.style.color = "red";
-    }
-  }
-  function playagain() {
-    setIter(iter + 1);
-    enteredWordRef.current!.value = "";
-    setCounter(0);
-    setWordCompleted(0);
-    setStop(false);
+  const [gameState, setGameState] = useState({
+    timerScore: 0,
+    wordScore: 0,
+    countDownTimer: 5,
+    givenWord: getRandomWord(initialLevel),
+    enteredWord: "",
+    stop: false,
+    gameNumber: 1,
+    scoreBoardData: [] as {
+      gameNumber: number;
+      timerScore: number;
+      wordScore: number;
+    }[],
+    maxScore: 0,
+    level: initialLevel,
+  });
 
-    setScoreData([...scoredata.slice(-5), { iter, counter, wordCompleted }]);
-    scoredata.map((element: any) => {
-      if (element.counter > maxscore) {
-        setmaxscore(element.counter);
-        highScoreRef.current!.innerHTML = `High score: ${element.counter} `;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (gameState.stop) {
+        clearInterval(interval);
+        return;
       }
-      return (
-        <div>
-          Game {element.iter}= Time: {element.counter} Word Completed:{" "}
-          {element.wordCompleted}
-        </div>
-      );
-    });
-    timerRef.current!.style.visibility = "visible";
-    enteredWordRef.current!.style.visibility = "visible";
-    enteredWordRef.current!.focus();
-    generateWord(level);
-  }
+
+      setGameState((prevState) => ({
+        ...prevState,
+        timerScore: prevState.timerScore + 1,
+        countDownTimer: prevState.countDownTimer - 1,
+      }));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [gameState.stop]);
+
+  useEffect(() => {
+    if (gameState.countDownTimer <= 0) {
+      setGameState((prevState) => ({
+        ...prevState,
+        stop: true,
+        givenWord: String(prevState.timerScore),
+      }));
+    }
+  }, [gameState.countDownTimer]);
+
+  const handleMatch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    if (inputValue === gameState.givenWord) {
+      setGameState((prevState) => ({
+        ...prevState,
+        wordScore: prevState.wordScore + 1,
+        enteredWord: "",
+        givenWord: getRandomWord(updateLevel(prevState.level)),
+        countDownTimer: Math.floor(
+          prevState.givenWord.length / getDifficultyFactor(prevState.level)
+        ),
+      }));
+    } else {
+      setGameState((prevState) => ({ ...prevState, enteredWord: inputValue }));
+    }
+  };
+
+  const getDifficultyFactor = (currentLevel: string) => {
+    switch (currentLevel) {
+      case "Easy":
+        return 1;
+      case "Medium":
+        return 1.5;
+      case "Hard":
+        return 2;
+      default:
+        return 1;
+    }
+  };
+
+  const updateLevel = (currentLevel: string) => {
+    const difficultyFactor = getDifficultyFactor(currentLevel) + 0.01;
+    if (difficultyFactor >= 2) {
+      return "Hard";
+    } else if (difficultyFactor >= 1.5) {
+      return "Medium";
+    } else {
+      return "Easy";
+    }
+  };
+
+  const playAgain = () => {
+    const newScoreBoardData = [
+      ...gameState.scoreBoardData.slice(-9),
+      {
+        gameNumber: gameState.gameNumber,
+        timerScore: gameState.timerScore,
+        wordScore: gameState.wordScore,
+      },
+    ];
+
+    const highestScore = newScoreBoardData.reduce(
+      (max, scoreData) => Math.max(max, scoreData.timerScore),
+      0
+    );
+
+    setGameState((prevState) => ({
+      ...prevState,
+      timerScore: 0,
+      wordScore: 0,
+      stop: false,
+      givenWord: getRandomWord(prevState.level),
+      countDownTimer: Math.floor(
+        prevState.givenWord.length / getDifficultyFactor(prevState.level)
+      ),
+      gameNumber: prevState.gameNumber + 1,
+      scoreBoardData: newScoreBoardData,
+      maxScore: highestScore,
+    }));
+  };
+
   return {
-    handlematch,
-    playagain,
-    counter,
-    iter,
-    scoredata,
-    wordCounter,
-    givenWord,
-    maxscore,
+    handleMatch,
+    playAgain,
+    enteredWord: gameState.enteredWord,
+    timerScore: gameState.timerScore,
+    gameNumber: gameState.gameNumber,
+    scoreBoardData: gameState.scoreBoardData,
+    countDownTimer: gameState.countDownTimer,
+    givenWord: gameState.givenWord,
+    maxScore: gameState.maxScore,
   };
 };
-
-export default useGameplay;

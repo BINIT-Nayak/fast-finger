@@ -9,7 +9,7 @@
 .gamePage__title {
   font-family: "Times New Roman", Times, serif;
   text-align: center;
-  font-size: 70px;
+  font-size: 100px;
   color: #f28500;
   font-weight: bold;
 }
@@ -21,16 +21,18 @@
   font-family: "Times New Roman", Times, serif;
   font-size: 20px;
   color: #fdfdff;
-  gap: 35%;
+  gap: 42%;
 }
 
 .profile__element {
   margin: 5px;
+  font-weight: bold;
 }
 
 .profile__element--gameNumber {
   font-size: 30px;
-  font-weight: bold;
+  font-weight: bolder;
+  color: black;
 }
 
 .gamePage__main {

@@ -9,7 +9,7 @@ function App() {
   const [name, setName] = useState<string>("");
   const [difficulty, setDifficulty] = useState<difficulty>("Easy");
 
-  const navigateToGamePage = (difficulty: string, name: string) => {
+  const navigateToGamePage = (difficulty: difficulty, name: string) => {
     setCurrentPage("GamePage");
     setName(name);
     setDifficulty(difficulty as "Easy" | "Medium" | "Hard");
