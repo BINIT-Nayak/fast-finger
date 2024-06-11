@@ -1,0 +1,129 @@
+.gamePage {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}
+
+.gamePage__title {
+  font-family: "Times New Roman", Times, serif;
+  text-align: center;
+  font-size: 100px;
+  color: #f28500;
+  font-weight: bold;
+}
+
+.gamePage__profile {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  color: #fdfdff;
+  gap: 42%;
+}
+
+.profile__element {
+  margin: 5px;
+  font-weight: bold;
+}
+
+.profile__element--gameNumber {
+  font-size: 30px;
+  font-weight: bolder;
+  color: black;
+}
+
+.gamePage__main {
+  display: flex;
+  gap: 20%;
+}
+
+.gamePage__main__scoreBoard {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: max-content;
+  padding: 20px;
+  background-color: rgb(164, 147, 126);
+  border-radius: 10px;
+  gap: 10px;
+  color: black;
+}
+
+.scoreBoard__title,
+.scoreBoard__highScore {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  color: #fdfdff;
+  font-weight: bold;
+}
+
+.gamePage__main__playArea {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.playArea__timer {
+  display: inline-block;
+  font-size: 50px;
+  font-weight: bolder;
+  color: white;
+}
+
+.playArea__givenWord {
+  display: block;
+  margin: 0px;
+  font-size: 80px;
+  color: #f28500;
+}
+
+.gamePageButton {
+  background-color: #000;
+  color: #f28500;
+  font-size: 25px;
+  width: 270px;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  cursor: pointer;
+}
+
+.gamePageButton:hover {
+  background-color: #ffbf00;
+  color: black;
+  transition: 0.7s;
+}
+
+@media screen and (max-width: 550px) {
+  .gamePage__main {
+    display: block;
+
+    background-image: url("./images/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .profile {
+    margin-left: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .gamePage__main--scoreBoard {
+    margin-left: 10%;
+  }
+
+  .profile--leftProfile,
+  .profile--scoreProfile {
+    text-align: center;
+  }
+
+  .gamePage__subtitle {
+    font-size: 20px;
+  }
+}
